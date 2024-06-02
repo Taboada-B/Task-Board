@@ -1,16 +1,31 @@
 // Retrieve tasks and nextId from localStorage
+
+// inputs from modal form
 let taskTitle = JSON.parse(localStorage.getItem("#taskTitle"));
 let taskList = JSON.parse(localStorage.getItem("#taskList"));
+let taskCalendar = JSON.parse(localStorage.getItem("#calendar"));
+// let calendar stuff  // need to add calendar info storage
+// end inputs from modal form
 let nextId = JSON.parse(localStorage.getItem("#nextId"));
 
-const projectNameInputEl = $('#project-name-input');
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
-if (nextId === null || nextId === undefined) {
-    
+    // if its empty make nextId 1 or nextId = nextId + 1;
+    if (nextId === null || nextId === undefined) {
+        nextId = 1;
+    }
+    else {
+        nextId = nextId + 1;
+    }
+    // storing nextId to localStorage
+localStorage.setItem("nextId",JSON.stringify(nextId));
 }
+
+function saveNextIdToStorage(nextId){
+    localStorage.setItem('nextId',JSON.stringify(nextId)) ;
 }
+
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
@@ -112,8 +127,11 @@ $(document).ready(function () {
 //       },
 //     });
 //   }
+
+// accepting input from input form
+
 $(document).ready(function () {
-    // Add event listener to form submission
+    // event listener modal submission 
     $('form').submit(function (event) {
         event.preventDefault(); // Prevent default form submission
 
