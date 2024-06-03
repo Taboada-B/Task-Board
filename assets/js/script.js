@@ -57,9 +57,11 @@ function generateTaskId() {
 // Todo: create a function to create a task card
 function createTaskCard(task) {
     // container for info
-    const divContainer = $('<div/>');
+    const divContainer = $('<div/>')
+    .addClass('draggable m-2');
+    // .attr('data-project-id', project.id);
     //inserting title
-    const titleElm = $('<h4>');
+    const titleElm = $('<h4>')
     titleElm.append(task.title);
     divContainer.append(titleElm);
     // inserting date
@@ -78,8 +80,9 @@ function createTaskCard(task) {
     // will have to change according to date
     divContainer.css('background-color', 'white');
 
-    // divContainer.css('border');
     return divContainer;
+
+
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -88,6 +91,23 @@ function renderTaskList() {
     for (let i = 0; i < data.length; i++) {
         $('#todo-cards').append(createTaskCard(data[i]));
     }
+    // draggable with class of .draggable targeting takscard <div>
+    $('.draggable').draggable({
+        opacity: 0.5,
+        zIndex: 100,
+        // ? This is the function that creates the clone of the card that is dragged. This is purely visual and does not affect the data.
+        helper: function (event) {
+          // ? Check if the target of the drag event is the card itself or a child element. If it is the card itself, clone it, otherwise find the parent card  that is draggable and clone that.
+          const original = $(event.target).hasClass('ui-draggable')
+            ? $(event.target)
+            : $(event.target).closest('.ui-draggable');
+          // ? Return the clone with the width set to the width of the original card. This is so the clone does not take up the entire width of the lane. This is to also fix a visual bug where the card shrinks as it's dragged to the right.
+          return original.clone().css({
+            width: original.outerWidth(),
+          });
+        },
+
+      });
 }
 
 // Todo: create a function to handle adding a new task
@@ -103,6 +123,11 @@ function handleDeleteTask(event) {
 
 }
 
+
+
+
+
+
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
 
@@ -115,3 +140,8 @@ $(document).ready(function () {
 
 
 $('#taskBtn').on('click', handleAddTask)
+
+
+
+
+
