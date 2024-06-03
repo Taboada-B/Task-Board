@@ -72,8 +72,14 @@ function createTaskCard(task) {
     const descElm = $('<p>');
     descElm.append(task.description);
     divContainer.append(descElm);
-   
-    
+    //    adding styling
+    divContainer.addClass('p-2 m-1' );
+    divContainer.css('border', 'grey 5px  solid ');
+    divContainer.css('border-radius', '15px');
+    // will have to change according to date
+    divContainer.css('background-color', 'beige');
+
+    // divContainer.css('border');
     return divContainer;
 }
 
