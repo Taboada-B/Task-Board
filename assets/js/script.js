@@ -1,4 +1,3 @@
-
 // Retrieve tasks and nextId from localStorage
 
 document.getElementById('taskForm').addEventListener('submit', function (event) {
@@ -6,9 +5,8 @@ document.getElementById('taskForm').addEventListener('submit', function (event) 
 
     // Get values from the form
     const taskTitle = document.getElementById('taskTitle').value;
-    const taskDueDate = document.getElementById('taskDueDate').value;
+    let taskDueDate = document.getElementById('taskDueDate').value;
     const taskDescription = document.getElementById('task').value;
-
     // Create task object
     const task = {
         title: taskTitle,
@@ -66,7 +64,8 @@ function createTaskCard(task) {
     divContainer.append(titleElm);
     // inserting date
     const dateElm = $('<p>');
-    dateElm.append(`Due on: ${task.dueDate}`);
+    const formattedDueDate = dayjs(task.dueDate).format('MMM D, YYYY');
+    dateElm.append(`Due on: ${formattedDueDate}`);
     divContainer.append(dateElm);
     // inserting description
     const descElm = $('<p>');
@@ -77,7 +76,7 @@ function createTaskCard(task) {
     divContainer.css('border', 'grey 5px  solid ');
     divContainer.css('border-radius', '15px');
     // will have to change according to date
-    divContainer.css('background-color', 'beige');
+    divContainer.css('background-color', 'white');
 
     // divContainer.css('border');
     return divContainer;
