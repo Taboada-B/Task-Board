@@ -52,23 +52,35 @@ function generateTaskId() {
         nextId = nextId + 1;
     }
     // storing nextId to localStorage
-    localStorage.setItem("nextId", JSON.stringify(nextId));
+    return localStorage.setItem("nextId", JSON.stringify(nextId));
 }
 
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
+    // container for info
     const divContainer = $('<div/>');
-    const titleElm = $('<p>');
+    //inserting title
+    const titleElm = $('<h4>');
     titleElm.append(task.title);
     divContainer.append(titleElm);
+    // inserting date
+    const dateElm = $('<p>');
+    dateElm.append(`Due on: ${task.dueDate}`);
+    divContainer.append(dateElm);
+    // inserting description
+    const descElm = $('<p>');
+    descElm.append(task.description);
+    divContainer.append(descElm);
+   
+    
     return divContainer;
 }
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
     const data = JSON.parse(localStorage.getItem('tasks'));
-    for(let i = 0; i < data.length; i++){
+    for (let i = 0; i < data.length; i++) {
         $('#todo-cards').append(createTaskCard(data[i]));
     }
 }
@@ -76,7 +88,7 @@ function renderTaskList() {
 // Todo: create a function to handle adding a new task
 function handleAddTask() {
     const title = $('#taskTitle').val();
-  $('#todo-cards').append(createTaskCard({ title }));
+    $('#todo-cards').append(createTaskCard({ title }));
 
 
 }
