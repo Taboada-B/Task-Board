@@ -126,33 +126,38 @@ function handleDeleteTask(event) {
 function draggableAndDelete(selector) {
     // takes 'task-#
     $(selector).draggable({
-        //vissually and make sure its on top
+        // visually and make sure it's on top
         opacity: 0.5,
         zIndex: 100,
-
+        // picking an element to be dragged
         helper: function (event) {
-            const original = $(event.target).hasClass('ui-draggable')
-                ? $(event.target)
-                : $(event.target).closest('.ui-draggable');
+            // initializing original
+            let original;
+            // helps find draggable container
+            if ($(event.target).hasClass('ui-draggable')) {
+                original = $(event.target);
+            } else {
+                original = $(event.target).closest('.ui-draggable');
+            }
+
             return original.clone().css({
                 width: original.outerWidth(),
             });
         },
     });
-    //calls delete task with an event listener for the clock of class delete-button
-    $(selector).find('.delete-btn').on('click', handleDeleteTask);
 }
 
 $(document).ready(function () {
     // when the document is ready, render the tasks, make lanes droppable
     renderTaskList();
-
+// making todo, in progress, and done droppable with class call
     $('.lane').droppable({
         accept: '.draggable',
         drop: handleDrop,
     });
 });
 
+//dropping the divContainer
 function handleDrop(event, ui) {
     const droppedCard = $(ui.draggable);
     droppedCard.detach().css({ top: 0, left: 0 }).appendTo($(this));
