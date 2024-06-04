@@ -111,16 +111,17 @@ function handleDeleteTask(event) {
     const parentDiv = $(event.target).closest('div');
     // splitting bc id comes as task-#, and selecting index 1
     const taskId = parentDiv.attr('id').split('-')[1];
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    // removing from Dom
+    parentDiv.remove();
 
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    // removing task with matching taskID
     tasks = tasks.filter(function (task) {
         return task.id != taskId;
     });
-    // removing task with matching taskID
-    tasks = tasks.filter(task => task.id != taskId);
 
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    parentDiv.remove();
+
 }
 
 function draggableAndDelete(selector) {
@@ -144,13 +145,15 @@ function draggableAndDelete(selector) {
                 width: original.outerWidth(),
             });
         },
+
     });
+    $(selector).find('.delete-btn').on('click',handleDeleteTask);
 }
 
 $(document).ready(function () {
     // when the document is ready, render the tasks, make lanes droppable
     renderTaskList();
-// making todo, in progress, and done droppable with class call
+    // making todo, in progress, and done droppable with class call
     $('.lane').droppable({
         accept: '.draggable',
         drop: handleDrop,
