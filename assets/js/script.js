@@ -54,25 +54,32 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-    // container for info
+    // container for info with unique ID for cards
     const divContainer = $('<div>')
-    //.attr();
+        .attr('id', 'task-${id}');
+
     //inserting title to card
     const titleElm = $('<h4>')
     titleElm.append(task.title);
     divContainer.append(titleElm);
+
     // inserting date to card
     const dateElm = $('<p>');
     const formattedDueDate = dayjs(task.dueDate).format('MMM D, YYYY');
     dateElm.append(`Due on: ${formattedDueDate}`);
     divContainer.append(dateElm);
+
     // inserting description to card
     const descElm = $('<p>');
     descElm.append(task.description);
     divContainer.append(descElm);
+
     // adding a delete button
-    const deleteElm = ('<button class="btn btn-secondary" id="delete"> Delete ')
+    const deleteElm = $('<button>')
+        .addClass('btn btn-secondary delete-btn')
+        .text('Delete');
     divContainer.append(deleteElm);
+
     //    adding styling and class to card
     divContainer.addClass('p-2 draggable m-2');
     divContainer.css('border', 'grey 5px  solid ');
@@ -116,10 +123,8 @@ function renderTaskList() {
             });
         },
     });
-
+    $('.delete-btn').on('click', handleDeleteTask);
 }
-
-
 
 
 // Todo: create a function to handle adding a new task
@@ -132,14 +137,16 @@ function handleAddTask() {
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-
-    // divContainer.innerHTML = '';
-
+    const parentDiv = $(event.target).closest('div');
+    parentDiv.remove();
+    
+    // removes tasks in local storage after deletion
+    const taskId = parentDiv.attr('id').split('-')[1];
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    tasks.splice(taskId, 1);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+   
 }
-
-
-
-
 
 
 // Todo: create a function to handle dropping a task into a new status lane
@@ -154,7 +161,6 @@ $(document).ready(function () {
 
 
 $('#taskBtn').on('click', handleAddTask);
-$('#delete').on('click', handleDeleteTask());
 
 
 
