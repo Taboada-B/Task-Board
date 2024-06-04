@@ -106,7 +106,6 @@ function renderTaskList() {
     for (let i = 0; i < data.length; i++) {
         $('#todo-cards').append(createTaskCard(data[i]));
     }
-
     // draggable with class of .draggable targeting takscard <div>
     $('.draggable').draggable({
         opacity: 0.5,
@@ -123,6 +122,7 @@ function renderTaskList() {
             });
         },
     });
+    
     $('.delete-btn').on('click', handleDeleteTask);
 }
 
