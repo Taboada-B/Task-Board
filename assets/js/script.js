@@ -5,7 +5,7 @@ document.getElementById('taskForm').addEventListener('submit', function (event) 
 
     // Get values from the form
     const taskTitle = document.getElementById('taskTitle').value;
-    let taskDueDate = document.getElementById('taskDueDate').value;
+    const taskDueDate = document.getElementById('taskDueDate').value;
     const taskDescription = document.getElementById('task').value;
     // Create task object
     const task = {
@@ -72,17 +72,21 @@ function createTaskCard(task) {
     const descElm = $('<p>');
     descElm.append(task.description);
     divContainer.append(descElm);
+    // adding a delete button
+const deleteElm = ('<button class="btn btn-secondary"> Delete ')
+divContainer.append(deleteElm);
+
     //    adding styling and class to card
     divContainer.addClass('p-2 draggable m-2');
     divContainer.css('border', 'grey 5px  solid ');
     divContainer.css('border-radius', '15px');
     // currently working on!
     // styling according to due date logic
-    if (due.isBefore(now, 'day')) {
-        cardClass = 'past-due';
-    } else if (due.isSame(now.add(1, 'day'), 'day')) {
-        cardClass = 'due-tomorrow';
-    }
+    // if (due.isBefore(now, 'day')) {
+    //     cardClass = 'past-due';
+    // } else if (due.isSame(now.add(1, 'day'), 'day')) {
+    //     cardClass = 'due-tomorrow';
+    // }
 
     // will have to change according to date
     divContainer.css('background-color', 'white');
@@ -98,6 +102,7 @@ function renderTaskList() {
     for (let i = 0; i < data.length; i++) {
         $('#todo-cards').append(createTaskCard(data[i]));
     }
+
     // draggable with class of .draggable targeting takscard <div>
     $('.draggable').draggable({
         opacity: 0.5,
@@ -121,10 +126,10 @@ function renderTaskList() {
 
 
 // Todo: create a function to handle adding a new task
+// recieving info from click and adding it to #todo-cards
 function handleAddTask() {
     const title = $('#taskTitle').val();
     $('#todo-cards').append(createTaskCard({ title }));
-
 
 }
 
