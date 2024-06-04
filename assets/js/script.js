@@ -58,25 +58,32 @@ function generateTaskId() {
 function createTaskCard(task) {
     // container for info
     const divContainer = $('<div/>')
-    .addClass('draggable m-2');
     // .attr('data-project-id', project.id);
-    //inserting title
+    //inserting title to card
     const titleElm = $('<h4>')
     titleElm.append(task.title);
     divContainer.append(titleElm);
-    // inserting date
+    // inserting date to card
     const dateElm = $('<p>');
     const formattedDueDate = dayjs(task.dueDate).format('MMM D, YYYY');
     dateElm.append(`Due on: ${formattedDueDate}`);
     divContainer.append(dateElm);
-    // inserting description
+    // inserting description to card
     const descElm = $('<p>');
     descElm.append(task.description);
     divContainer.append(descElm);
-    //    adding styling
-    divContainer.addClass('p-2 m-1' );
+    //    adding styling and class to card
+    divContainer.addClass('p-2 draggable m-2');
     divContainer.css('border', 'grey 5px  solid ');
     divContainer.css('border-radius', '15px');
+    // currently working on!
+    // styling according to due date logic
+    if (due.isBefore(now, 'day')) {
+        cardClass = 'past-due';
+    } else if (due.isSame(now.add(1, 'day'), 'day')) {
+        cardClass = 'due-tomorrow';
+    }
+
     // will have to change according to date
     divContainer.css('background-color', 'white');
 
@@ -97,18 +104,20 @@ function renderTaskList() {
         zIndex: 100,
         // ? This is the function that creates the clone of the card that is dragged. This is purely visual and does not affect the data.
         helper: function (event) {
-          // ? Check if the target of the drag event is the card itself or a child element. If it is the card itself, clone it, otherwise find the parent card  that is draggable and clone that.
-          const original = $(event.target).hasClass('ui-draggable')
-            ? $(event.target)
-            : $(event.target).closest('.ui-draggable');
-          // ? Return the clone with the width set to the width of the original card. This is so the clone does not take up the entire width of the lane. This is to also fix a visual bug where the card shrinks as it's dragged to the right.
-          return original.clone().css({
-            width: original.outerWidth(),
-          });
+            // ? Check if the target of the drag event is the card itself or a child element. If it is the card itself, clone it, otherwise find the parent card  that is draggable and clone that.
+            const original = $(event.target).hasClass('ui-draggable')
+                ? $(event.target)
+                : $(event.target).closest('.ui-draggable');
+            // ? Return the clone with the width set to the width of the original card. This is so the clone does not take up the entire width of the lane. This is to also fix a visual bug where the card shrinks as it's dragged to the right.
+            return original.clone().css({
+                width: original.outerWidth(),
+            });
         },
-      });
+    });
 
 }
+
+
 
 
 // Todo: create a function to handle adding a new task
@@ -133,8 +142,8 @@ function handleDeleteTask(event) {
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-       
-      }
+
+}
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
