@@ -39,61 +39,56 @@ document.getElementById('taskForm').addEventListener('submit', function (event) 
 
 // Todo: create a function to generate a unique task id
 
-let nexId = JSON.parse(localStorage.getItem("nextId")) || 1;
+
+let nextId = JSON.parse(localStorage.getItem("nextId")) || 1;
 
 function generateTaskId() {
     // if its empty make nextId 1 or nextId = nextId + 1;
-return nextId++;
+    return nextId++;
 }
 
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-    generateTaskId();
-    // container for info with unique ID for cards
-    const divContainer = $('<div>')
-        .attr('id', `task- ${id}`);
-console.log(divContainer)
-    //inserting title to card
-    const titleElm = $('<h4>')
-    titleElm.append(task.title);
+    // task.preventDefault()
+    const id = generateTaskId();
+    // making container for all of the info, giving it an unique taskid
+    const divContainer = $('<div>').attr('id', `task-${id}`);
+    // adding title into h4
+    const titleElm = $('<h4>').text(task.title);
     divContainer.append(titleElm);
-
-    // inserting date to card
-    const dateElm = $('<p>');
+    // adding date into p and formatting
     const formattedDueDate = dayjs(task.dueDate).format('MMM D, YYYY');
-    dateElm.append(`Due on: ${formattedDueDate}`);
+    const dateElm = $('<p>').text(`Due on: ${formattedDueDate}`);
     divContainer.append(dateElm);
-
-    // inserting description to card
-    const descElm = $('<p>');
-    descElm.append(task.description);
+    // adding task desctiption into p 
+    const descElm = $('<p>').text(task.description);
     divContainer.append(descElm);
-
-    // adding a delete button
-    const deleteElm = $('<button>')
-        .addClass('btn btn-secondary delete-btn')
-        .text('Delete');
+    // creating a delete button with class of delete-btn
+    const deleteElm = $('<button>').addClass('btn btn-secondary delete-btn').text('Delete');
     divContainer.append(deleteElm);
-
-    //    adding styling and class to card
-    divContainer.addClass('p-2 draggable m-2');
-    divContainer.css('border', 'grey 5px  solid ');
-    divContainer.css('border-radius', '15px');
-    // currently working on!
-    // styling according to due date logic
-    // if (due.isBefore(now, 'day')) {
-    //     cardClass = 'past-due';
-    // } else if (due.isSame(now.add(1, 'day'), 'day')) {
-    //     cardClass = 'due-tomorrow';
-    // }
-
-    // will have to change according to date
-    divContainer.css('background-color', 'white');
+    // adding class of draggable
+    divContainer.addClass('p-2 draggable m-2').css({
+        'border': 'grey 5px solid',
+        'border-radius': '15px',
+        'background-color':  getCardColor(task.dueDate)
+    });
 
     return divContainer;
+}
 
-
+function getCardColor(event) {
+    const now = dayjs();
+    console.log(now)
+    const due = dayjs(event);
+console.log(due)
+    if (due.isBefore(now, 'day')) {
+        return 'red'; // Past due
+    } else if (due.isSame(now.add(1, 'day'), 'day')) {
+        return 'yellow'; // Due tomorrow
+    } else {
+        return 'white'; // Default color
+    }
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -118,7 +113,7 @@ function renderTaskList() {
             });
         },
     });
-    
+
     $('.delete-btn').on('click', handleDeleteTask);
 }
 
@@ -128,20 +123,19 @@ function renderTaskList() {
 function handleAddTask() {
     const title = $('#taskTitle').val();
     $('#todo-cards').append(createTaskCard({ title }));
-    
 }
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
     const parentDiv = $(event.target).closest('div');
     parentDiv.remove();
-    
+
     // removes tasks in local storage after deletion
     const taskId = parentDiv.attr('id').split('-')[1];
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     tasks.splice(taskId, 1);
     localStorage.setItem('tasks', JSON.stringify(tasks));
-   
+
 }
 
 
@@ -149,9 +143,9 @@ function handleDeleteTask(event) {
 function handleDrop(event, ui) {
     $('card').droppable({
         accept: '.draggable',
-        drop: function(event, ui) {
+        drop: function (event, ui) {
             const droppedCard = $(ui.draggable);
-            droppedCard.detach().css({top: 0, left: 0}).appendTo($(this));
+            droppedCard.detach().css({ top: 0, left: 0 }).appendTo($(this));
         }
     });
 }
