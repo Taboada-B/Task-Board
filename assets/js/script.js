@@ -84,7 +84,7 @@ function getCardColor(event) {
 console.log(due)
     if (due.isBefore(now, 'day')) {
         return 'red'; // Past due
-    } else if (due.isSame(now.add(1, 'day'), 'day')) {
+    } else if (due.isSame(now.add(0, 'day'), 'day')) {
         return 'yellow'; // Due tomorrow
     } else {
         return 'white'; // Default color
@@ -141,7 +141,8 @@ function handleDeleteTask(event) {
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-    $('card').droppable({
+
+    $('divContainer').droppable({
         accept: '.draggable',
         drop: function (event, ui) {
             const droppedCard = $(ui.draggable);
@@ -149,6 +150,32 @@ function handleDrop(event, ui) {
         }
     });
 }
+// not my code
+// function handleDrop(event, ui) {
+//     // ? Read projects from localStorage
+    
+//     // const projects = readProjectsFromStorage();
+  
+//     // ? Get the project id from the event
+//     const taskId = ui.draggable[0].dataset.projectId;
+  
+//     // ? Get the id of the lane that the card was dropped into
+//     const newStatus = event.target.id;
+  
+//     for (let project of projects) {
+//       // ? Find the project card by the `id` and update the project status.
+//       if (project.id === taskId) {
+//         project.status = newStatus;
+//       }
+//     }
+//     // ? Save the updated projects array to localStorage (overwritting the previous one) and render the new project data to the screen.
+//     localStorage.setItem('projects', JSON.stringify(projects));
+//     printProjectData();
+//   }
+//   //not my code end
+
+
+
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
@@ -158,6 +185,12 @@ $(document).ready(function () {
 
 $('#taskBtn').on('click', handleAddTask);
 handleDrop();
+
+ $('.lane').droppable({
+    accept: '.draggable',
+    drop: handleDrop,
+  });
+
 
 
 
