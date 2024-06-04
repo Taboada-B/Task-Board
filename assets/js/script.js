@@ -67,26 +67,29 @@ function createTaskCard(task) {
     // creating a delete button with class of delete-btn
     const deleteElm = $('<button>').addClass('btn btn-secondary delete-btn').text('Delete');
     divContainer.append(deleteElm);
-    // adding class of draggable
+    // adding class of draggable and dealing with color
     divContainer.addClass('p-2 draggable m-2').css({
         'border': 'grey 5px solid',
         'border-radius': '15px',
-        'background-color':  getCardColor(task.dueDate)
+        'background-color': getCardColor(task.dueDate)
     });
 
     return divContainer;
 }
 
 function getCardColor(event) {
+    // Display current date
     const now = dayjs();
-    console.log(now)
+    // event date
     const due = dayjs(event);
-console.log(due)
+// logic for background color
     if (due.isBefore(now, 'day')) {
         return 'red'; // Past due
-    } else if (due.isSame(now.add(0, 'day'), 'day')) {
-        return 'yellow'; // Due tomorrow
-    } else {
+    }
+    else if (due.isSame(now, 'day')) {
+        return 'yellow'; // Due today
+    }
+    else {
         return 'white'; // Default color
     }
 }
@@ -153,15 +156,15 @@ function handleDrop(event, ui) {
 // not my code
 // function handleDrop(event, ui) {
 //     // ? Read projects from localStorage
-    
+
 //     // const projects = readProjectsFromStorage();
-  
+
 //     // ? Get the project id from the event
 //     const taskId = ui.draggable[0].dataset.projectId;
-  
+
 //     // ? Get the id of the lane that the card was dropped into
 //     const newStatus = event.target.id;
-  
+
 //     for (let project of projects) {
 //       // ? Find the project card by the `id` and update the project status.
 //       if (project.id === taskId) {
@@ -186,10 +189,10 @@ $(document).ready(function () {
 $('#taskBtn').on('click', handleAddTask);
 handleDrop();
 
- $('.lane').droppable({
+$('.lane').droppable({
     accept: '.draggable',
     drop: handleDrop,
-  });
+});
 
 
 
