@@ -10,7 +10,7 @@ https://taboada-b.github.io/Task-Board/
 
 ## Screenshot
 
-<!-- ![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title") -->
+![Screenshot](./assets/img/Screenshot.png "Website Screenshot")
 
-##Author
+## Author
 Bryan Taboada
