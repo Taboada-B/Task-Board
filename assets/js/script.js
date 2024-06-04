@@ -37,8 +37,6 @@ document.getElementById('taskForm').addEventListener('submit', function (event) 
     document.getElementById('taskForm').reset();
 });
 
-
-
 // Todo: create a function to generate a unique task id
 
 function generateTaskId() {
@@ -57,8 +55,8 @@ function generateTaskId() {
 // Todo: create a function to create a task card
 function createTaskCard(task) {
     // container for info
-    const divContainer = $('<div/>')
-    // .attr('data-project-id', project.id);
+    const divContainer = $('<div>')
+    //.attr();
     //inserting title to card
     const titleElm = $('<h4>')
     titleElm.append(task.title);
@@ -73,9 +71,8 @@ function createTaskCard(task) {
     descElm.append(task.description);
     divContainer.append(descElm);
     // adding a delete button
-const deleteElm = ('<button class="btn btn-secondary"> Delete ')
-divContainer.append(deleteElm);
-
+    const deleteElm = ('<button class="btn btn-secondary" id="delete"> Delete ')
+    divContainer.append(deleteElm);
     //    adding styling and class to card
     divContainer.addClass('p-2 draggable m-2');
     divContainer.css('border', 'grey 5px  solid ');
@@ -130,13 +127,13 @@ function renderTaskList() {
 function handleAddTask() {
     const title = $('#taskTitle').val();
     $('#todo-cards').append(createTaskCard({ title }));
-
+    console.log('are we here?')
 }
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
 
-
+    // divContainer.innerHTML = '';
 
 }
 
@@ -156,7 +153,8 @@ $(document).ready(function () {
 });
 
 
-$('#taskBtn').on('click', handleAddTask)
+$('#taskBtn').on('click', handleAddTask);
+$('#delete').on('click', handleDeleteTask());
 
 
 
